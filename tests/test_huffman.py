@@ -7,55 +7,38 @@ sys.path.insert(0, abspath(join(dirname(__file__), '../src')))
 import pynflate
 # XXX end of hack
 
+from pytest import fixture
 from pynflate.huffman import Codec
 
 
-def test_passes():
-    assert 1
+@fixture
+def codec():
+    c = Codec()
+
+    c.update('a', '0')
+    c.update('b', '10')
+    c.update('c', '11')
+
+    return c
 
 
-def test_codec_interface():
-    codec = Codec()
-    codec.update('a', '010')
-    assert codec.encode('a') == '010'
-    assert codec.decode('010') == 'a'
+class TestCodec(object):
+    def test_codec_interface(self):
+        codec = Codec()
+        codec.update('a', '010')
+        assert codec.encode('a') == '010'
+        assert codec.decode('010') == 'a'
 
+    def test_many_letters(self, codec):
+        assert codec.encode('b') == '10'
+        assert codec.decode('0') == 'a'
 
-def test_many_letters():
-    codec = Codec()
+    def test_two_letter_encoding(self, codec):
+        assert codec.encode('ab') == '010'
 
-    codec.update('a', '0')
-    codec.update('b', '10')
-    codec.update('c', '11')
+    def test_two_letter_decoding(self, codec):
+        assert codec.decode('010') == 'ab'
 
-    assert codec.encode('b') == '10'
-    assert codec.decode('0') == 'a'
-
-
-def test_two_letter_encoding():
-    codec = Codec()
-
-    codec.update('a', '0')
-    codec.update('b', '10')
-
-    assert codec.encode('ab') == '010'
-
-
-def test_two_letter_decoding():
-    codec = Codec()
-
-    codec.update('a', '0')
-    codec.update('b', '10')
-
-    assert codec.decode('010') == 'ab'
-
-
-def test_complex_coding():
-    codec = Codec()
-
-    codec.update('a', '0')
-    codec.update('b', '10')
-    codec.update('c', '11')
-
-    assert codec.encode('cca') == '11110'
-    assert codec.decode('1110010') == 'cbab'
+    def test_complex_coding(self, codec):
+        assert codec.encode('cca') == '11110'
+        assert codec.decode('1110010') == 'cbab'
