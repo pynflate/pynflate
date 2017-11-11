@@ -39,3 +39,12 @@ def test_two_letter_encoding():
     codec.update('b', '10')
 
     assert codec.encode('ab') == '010'
+
+
+def test_two_letter_decoding():
+    codec = Codec()
+
+    codec.update('a', '0')
+    codec.update('b', '10')
+
+    assert codec.decode('010') == 'ab'

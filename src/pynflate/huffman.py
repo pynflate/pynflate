@@ -10,5 +10,16 @@ class Codec:
     def encode(self, s):
         return ''.join(self.codes[letter] for letter in s)
 
-    def decode(self, code):
-        return self.letters[code]
+    def _decode(self, s):
+        code = ''
+        for c in s:
+            code += c
+
+            if code in self.letters:
+                yield self.letters[code]
+                code = ''
+
+        assert code == ''
+
+    def decode(self, s):
+        return ''.join(self._decode(s))
