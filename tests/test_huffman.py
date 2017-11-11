@@ -48,3 +48,14 @@ def test_two_letter_decoding():
     codec.update('b', '10')
 
     assert codec.decode('010') == 'ab'
+
+
+def test_complex_coding():
+    codec = Codec()
+
+    codec.update('a', '0')
+    codec.update('b', '10')
+    codec.update('c', '11')
+
+    assert codec.encode('cca') == '11110'
+    assert codec.decode('1110010') == 'cbab'
