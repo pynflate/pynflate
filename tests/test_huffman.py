@@ -30,3 +30,12 @@ def test_many_letters():
 
     assert codec.encode('b') == '10'
     assert codec.decode('0') == 'a'
+
+
+def test_two_letter_encoding():
+    codec = Codec()
+
+    codec.update('a', '0')
+    codec.update('b', '10')
+
+    assert codec.encode('ab') == '010'
