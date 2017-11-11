@@ -1,10 +1,14 @@
 class Codec:
+    def __init__(self):
+        self.letters = {}
+        self.codes = {}
+
     def update(self, letter, code):
-        self.letter = letter
-        self.code = code
+        self.letters[code] = letter
+        self.codes[letter] = code
 
     def encode(self, letter):
-        return self.code
+        return self.codes[letter]
 
     def decode(self, code):
-        return self.letter
+        return self.letters[code]

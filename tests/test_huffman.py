@@ -19,3 +19,14 @@ def test_codec_interface():
     codec.update('a', '010')
     assert codec.encode('a') == '010'
     assert codec.decode('010') == 'a'
+
+
+def test_many_letters():
+    codec = Codec()
+
+    codec.update('a', '0')
+    codec.update('b', '10')
+    codec.update('c', '11')
+
+    assert codec.encode('b') == '10'
+    assert codec.decode('0') == 'a'
