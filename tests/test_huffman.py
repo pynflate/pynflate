@@ -1,5 +1,5 @@
 from pytest import fixture
-from pynflate.huffman import Codec
+from pynflate.huffman import Codec, huffman
 
 
 @fixture
@@ -13,8 +13,8 @@ def codec():
     return c
 
 
-class TestCodec(object):
-    def test_codec_interface(self):
+class TestCodec:
+    def test_interface(self):
         codec = Codec()
         codec.update('a', '010')
         assert codec.encode('a') == '010'
@@ -33,3 +33,9 @@ class TestCodec(object):
     def test_complex_coding(self, codec):
         assert codec.encode('cca') == '11110'
         assert codec.decode('1110010') == 'cbab'
+
+
+class TestHuffman:
+    def test_interface(self):
+        codes = huffman({'a': 1, 'b': 2})
+        assert codes == {'b': '0', 'a': '1'}

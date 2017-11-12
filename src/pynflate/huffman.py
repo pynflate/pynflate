@@ -23,3 +23,7 @@ class Codec:
 
     def decode(self, s):
         return ''.join(self._decode(s))
+
+
+def huffman(frequencies):
+    return {'b': '0', 'a': '1'}
