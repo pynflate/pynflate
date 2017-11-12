@@ -2,7 +2,21 @@
 pynflate
 ********
 
-Pure Python implemtation of Deflate data compression algorithm.
+Pure Python implementation of Deflate data compression algorithm.
+
+Development
+===========
+
+.. code-block:: sh
+
+    virtualenv --python=python3 venv
+    . venv/bin/activate
+
+    cd $pynflate_home_dir
+
+    pip install -e .
+    pytest
+
 
 References
 ==========

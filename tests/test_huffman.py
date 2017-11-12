@@ -1,12 +1,3 @@
-# XXX hack - until I understand how to use `pytest` properly
-import sys
-from os.path import abspath, join, dirname
-
-sys.path.insert(0, abspath(join(dirname(__file__), '../src')))
-
-import pynflate
-# XXX end of hack
-
 from pytest import fixture
 from pynflate.huffman import Codec
 
