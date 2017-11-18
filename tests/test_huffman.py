@@ -38,4 +38,8 @@ class TestCodec:
 class TestHuffman:
     def test_interface(self):
         codes = huffman({'a': 1, 'b': 2})
-        assert codes == {'b': '0', 'a': '1'}
+        assert codes == {'a': '0', 'b': '1'}
+
+    def test_two_minimal(self):
+        codes = huffman({'c': 3, 'd': 4})
+        assert codes == {'c': '0', 'd': '1'}
