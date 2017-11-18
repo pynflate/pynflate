@@ -40,6 +40,10 @@ class TestHuffman:
         codes = huffman({'a': 1, 'b': 2})
         assert codes == {'a': '0', 'b': '1'}
 
-    def test_two_minimal(self):
+    def test_two_letters(self):
         codes = huffman({'c': 3, 'd': 4})
         assert codes == {'c': '0', 'd': '1'}
+
+    def test_three_letters(self):
+        codes = huffman({'a': 1, 'b': 2, 'c': 5})
+        assert codes == {'a': '00', 'b': '01', 'c': '1'}

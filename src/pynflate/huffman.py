@@ -33,9 +33,23 @@ def _min_letter(frequencies):
 
 
 def huffman(frequencies):
-    min_letter = _min_letter(frequencies)
-    del frequencies[min_letter]
+    res = {letter: '' for letter in frequencies}
 
-    min_letter2 = _min_letter(frequencies)
+    while len(frequencies) > 1:
+        min_letter = _min_letter(frequencies)
+        total = frequencies[min_letter]
+        del frequencies[min_letter]
 
-    return {min_letter: '0', min_letter2: '1'}
+        min_letter2 = _min_letter(frequencies)
+        total += frequencies[min_letter2]
+        del frequencies[min_letter2]
+
+        for a in min_letter:
+            res[a] = '0' + res[a]
+
+        for b in min_letter2:
+            res[b] = '1' + res[b]
+
+        frequencies[min_letter + min_letter2] = total
+
+    return res
