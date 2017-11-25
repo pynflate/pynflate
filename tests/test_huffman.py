@@ -47,3 +47,7 @@ class TestHuffman:
     def test_three_letters(self):
         codes = huffman({'a': 1, 'b': 2, 'c': 5})
         assert codes == {'a': '00', 'b': '01', 'c': '1'}
+
+    def test_equal_frequencies(self):
+        codes = huffman({'a': 1, 'b': 1})
+        assert codes == {'a': '0', 'b': '1'}

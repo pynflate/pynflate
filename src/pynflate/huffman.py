@@ -27,9 +27,10 @@ class Codec:
 
 def _min_letter(frequencies):
     min_freq = min(frequencies.values())
-    min_letter, = [letter for letter in frequencies
+    min_letters = [letter for letter in frequencies
                    if frequencies[letter] == min_freq]
-    return min_letter
+    # Ensure stability
+    return min(min_letters)
 
 
 def huffman(frequencies):
