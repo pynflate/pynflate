@@ -1,3 +1,6 @@
+from heapq import heappush, heappop
+
+
 class Codec:
     def __init__(self):
         self.letters = {}
@@ -12,6 +15,7 @@ class Codec:
 
     def _decode(self, s):
         code = ''
+
         for c in s:
             code += c
 
@@ -25,32 +29,30 @@ class Codec:
         return ''.join(self._decode(s))
 
 
-def _min_letter(frequencies):
-    min_freq = min(frequencies.values())
-    min_letters = [letter for letter in frequencies
-                   if frequencies[letter] == min_freq]
-    # Ensure stability
-    return min(min_letters)
-
-
 def huffman(frequencies):
+    queue = []
+
+    for letter, frequency in frequencies.items():
+        heappush(queue, (frequency, {letter}))
+
     res = {letter: '' for letter in frequencies}
 
-    while len(frequencies) > 1:
-        min_letter = _min_letter(frequencies)
-        total = frequencies[min_letter]
-        del frequencies[min_letter]
+    while len(queue) > 1:
+        first_freq, first_letters = heappop(queue)
+        second_freq, second_letters = heappop(queue)
 
-        min_letter2 = _min_letter(frequencies)
-        total += frequencies[min_letter2]
-        del frequencies[min_letter2]
+        for letter in first_letters:
+            res[letter] = '0' + res[letter]
 
-        for a in min_letter:
-            res[a] = '0' + res[a]
+        for letter in second_letters:
+            res[letter] = '1' + res[letter]
 
-        for b in min_letter2:
-            res[b] = '1' + res[b]
-
-        frequencies[min_letter + min_letter2] = total
+        heappush(
+            queue,
+            (
+                first_freq + second_freq,
+                first_letters | second_letters
+            )
+        )
 
     return res
