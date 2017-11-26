@@ -63,3 +63,7 @@ class TestHuffman:
             'c': '010', 'd': '011',
             'e': '10'
         }
+
+    def test_corner_cases(self):
+        assert huffman({}) == {}
+        assert huffman({'a': 1}) == {'a': '0'}

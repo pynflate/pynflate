@@ -30,12 +30,15 @@ class Codec:
 
 
 def huffman(frequencies):
+    if len(frequencies) == 1:
+        letter, = frequencies
+        return {letter: '0'}
+
     queue = []
+    res = {letter: '' for letter in frequencies}
 
     for letter, frequency in frequencies.items():
-        heappush(queue, (frequency, {letter}))
-
-    res = {letter: '' for letter in frequencies}
+        heappush(queue, (frequency, letter))
 
     while len(queue) > 1:
         first_freq, first_letters = heappop(queue)
@@ -51,7 +54,7 @@ def huffman(frequencies):
             queue,
             (
                 first_freq + second_freq,
-                first_letters | second_letters
+                ''.join(sorted(first_letters + second_letters))
             )
         )
 
