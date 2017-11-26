@@ -51,3 +51,15 @@ class TestHuffman:
     def test_equal_frequencies(self):
         codes = huffman({'a': 1, 'b': 1})
         assert codes == {'a': '0', 'b': '1'}
+
+    def test_complex_case(self):
+        codes = huffman({
+            'a': 10, 'b': 5,
+            'c': 1, 'd': 4,
+            'e': 7
+        })
+        assert codes == {
+            'a': '11', 'b': '00',
+            'c': '010', 'd': '011',
+            'e': '10'
+        }
