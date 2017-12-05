@@ -1,4 +1,5 @@
 from heapq import heappush, heappop
+from collections import Counter
 
 
 class Codec:
@@ -59,3 +60,15 @@ def huffman(frequencies):
         )
 
     return res
+
+
+def compress(s):
+    frequencies = Counter(s)
+    codes = huffman(frequencies)
+
+    codec = Codec()
+
+    for letter, code in codes.items():
+        codec.update(letter, code)
+
+    return codec.encode(s)

@@ -1,5 +1,5 @@
 from pytest import fixture
-from pynflate.huffman import Codec, huffman
+from pynflate.huffman import Codec, huffman, compress
 
 
 @fixture
@@ -67,3 +67,14 @@ class TestHuffman:
     def test_corner_cases(self):
         assert huffman({}) == {}
         assert huffman({'a': 1}) == {'a': '0'}
+
+
+class TestCompress:
+    def test_interface(self):
+        assert compress('') == ''
+
+    def test_one_char(self):
+        assert compress('a') == '0'
+
+    def test_two_chars(self):
+        assert compress('aba') == '101'
