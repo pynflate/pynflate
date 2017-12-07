@@ -6,19 +6,25 @@ class Lz77(object):
         self._sliding_window_length = sliding_window_length
 
     def compress(self, data):
-        lz77buffer = Lz77Buffer(self._sliding_window_length, data)
+        lz77 = Lz77Compressor(self._sliding_window_length, data)
         position = 0
         while position < len(data):
-            codeword = lz77buffer.codeword_for_position(position)
+            codeword = lz77.codeword_for_position(position)
             position += len(codeword)
             yield codeword
 
+    def decompress(self, codewords):
+        lz77 = Lz77Decompressor(self._sliding_window_length)
+        for codeword in codewords:
+            lz77.decompress_codeword(codeword)
 
-class Lz77Buffer(object):
+        return lz77.decompressed
+
+
+class Lz77Compressor(object):
     def __init__(self, sliding_window_length, data):
         self._sliding_window_length = sliding_window_length
         self._buffer = data
-        self._buffer_len = len(data)
 
     def codeword_for_position(self, position):
         longest_match_len = 0
@@ -41,7 +47,7 @@ class Lz77Buffer(object):
         match_len = 0
 
         # The longest match can be until the last character in the buffer, not including it
-        while matchee_pos + match_len + 1 < self._buffer_len:
+        while matchee_pos + match_len + 1 < len(self._buffer):
             if self._buffer[pattern_pos + match_len] != self._buffer[matchee_pos + match_len]:
                 break
             match_len += 1
@@ -76,3 +82,34 @@ class Codeword(object):
 
     def __repr__(self):
         return str((self.prefix_start_offset, self.prefix_len, self.character))
+
+
+class Lz77Decompressor(object):
+    def __init__(self, sliding_window_length):
+        self._sliding_window_length = sliding_window_length
+        self._buffer = ''
+
+    def decompress_codeword(self, codeword):
+        if codeword.prefix_start_offset > len(self._buffer):
+            raise CodewordNotInWindow()
+        elif codeword.prefix_start_offset < 0:
+            raise CodewordNegative()
+        elif codeword.prefix_start_offset > 0:
+            position = len(self._buffer) - codeword.prefix_start_offset
+            for i in range(codeword.prefix_len):
+                self._buffer += self._buffer[position]
+                position += 1
+
+        self._buffer += codeword.character
+
+    @property
+    def decompressed(self):
+        return self._buffer
+
+
+class CodewordNotInWindow(Exception):
+    pass
+
+
+class CodewordNegative(Exception):
+    pass
