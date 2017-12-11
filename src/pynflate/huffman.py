@@ -72,3 +72,7 @@ def compress(s):
         codec.update(letter, code)
 
     return codec.encode(s)
+
+
+def tree_encode(tree):
+    return [len(node) for node in tree]

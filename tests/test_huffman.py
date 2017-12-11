@@ -1,5 +1,6 @@
 from pytest import fixture
 from pynflate.huffman import Codec, huffman, compress
+from pynflate.huffman import tree_encode
 
 
 @fixture
@@ -78,3 +79,13 @@ class TestCompress:
 
     def test_two_chars(self):
         assert compress('aba') == '101'
+
+
+class TestEncodeTree:
+    def test_interface(self):
+        assert tree_encode(['0']) == [1]
+
+    def test_real_case(self):
+        tree = ['0', '10', '110', '111']
+        codes = [1, 2, 3, 3]
+        assert tree_encode(tree) == codes
